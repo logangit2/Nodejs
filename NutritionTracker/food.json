@@ -1,0 +1,22 @@
+[
+  {
+    "foodName": "Chicken",
+
+    "calories": 380,
+    "carbs": 41
+  },
+  {
+    "foodName": "Bread",
+    "calories": 380,
+
+    "carbs": 41
+  },
+  {
+    "foodName": "Salad",
+
+    "calories": 400,
+    "carbs": 13
+  },
+  { "foodName": "Apple", "calories": 80, "carbs": 21 },
+  { "foodName": "Egg", "calories": 80, "carbs": 21 }
+]
