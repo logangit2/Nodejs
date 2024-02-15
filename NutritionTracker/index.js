@@ -46,7 +46,9 @@ app.post("/register", (req, res) => {
 app.post("/login", async (req, res) => {
   let user = req.body;
   try {
-    let logUser = await userModel.findOne({ email: user.email });
+    let logUser = await userModel.findOne({
+      email: user.email,
+    });
     if (logUser !== null) {
       //compare password
       bcrypt.compare(user.password, logUser.password, (err, success) => {
@@ -54,17 +56,23 @@ app.post("/login", async (req, res) => {
           //generating jwt token
           jwt.sign({ email: user.email }, "logankey", (err, token) => {
             if (!err) {
-              res.status(200).send({ token: token,message:"Login-Success",type:"success" });
+              res.status(200).send({
+                token: token,
+                message: "Login-Success",
+                type: "success",
+                name: logUser.name,
+                userid: logUser._id,
+              });
             }
           });
         } else {
           console.log(err);
-          res.status(404).send({ message: "wrong password" ,type:"wrong"});
+          res.status(404).send({ message: "wrong password", type: "wrong" });
         }
       });
     } else {
       console.log("wrong email");
-      res.status(400).send({ message: "check your email" });
+      res.status(400).send({ message: "check your email or password" });
     }
   } catch (err) {
     console.log(err);
