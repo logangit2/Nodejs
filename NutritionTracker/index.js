@@ -1,3 +1,5 @@
+//Nutrify
+
 const mongoose = require("mongoose");
 const express = require("express");
 const bcrypt = require("bcryptjs");
@@ -81,10 +83,16 @@ app.post("/login", async (req, res) => {
 });
 
 //fectching food data
-app.get("/food", verifyToken, async (req, res) => {
+app.get("/food/:name", verifyToken, async (req, res) => {
   try {
-    let foodData = await foodModel.find();
-    res.send({ foodData });
+    let foodData = await foodModel.find({
+      name: { $regex: req.params.name, $options: "i" },
+    });
+    if (foodData.length !== 0) {
+      res.send(foodData);
+    } else {
+      res.send({ message: "no food found" });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -106,10 +114,10 @@ function verifyToken(req, res, next) {
   let token = req.headers.authorization.split(" ")[1];
   jwt.verify(token, "logankey", (err, res) => {
     if (!err) {
-      console.log(" token verified");
+    //  console.log(" token verified");
       next();
     } else {
-      console.log(err);
+      console.log("no token found or wrong token");
       res.send({ message: "some problem or Wrong token" });
     }
   });
